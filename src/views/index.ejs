@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Catálogo Geek — Home</title>
+  <title>Controle de Despesas</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -28,18 +28,6 @@
 
     .badge-type {
       letter-spacing: .3px;
-    }
-
-    .cover {
-      width: 100%;
-      aspect-ratio: 3/4;
-      object-fit: cover;
-      background: #0b0d10;
-    }
-
-    .search-hero {
-      background: linear-gradient(180deg, #10141b 0%, #0b0d10 100%);
-      border-bottom: 1px solid #232833;
     }
 
     .form-control,
@@ -73,6 +61,12 @@
     a:hover {
       color: #9ad0ff;
     }
+
+    .total {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #9ad0ff;
+    }
   </style>
 </head>
 
@@ -80,106 +74,157 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="#">📚🎬 Catálogo Geek</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="offcanvas offcanvas-end text-bg-dark" id="menu">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title">Menu</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <div class="offcanvas-body">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link active" href="#">Início</a></li>
-            <li class="nav-item"><a class="nav-link" href="/usuario/login">Entrar</a></li>
-            <li class="nav-item"><a class="nav-link" href="/usuario/cadastro">Cadastrar</a></li>
-          </ul>
-        </div>
-      </div>
+      <a class="navbar-brand fw-bold" href="#">Controle de Despesas</a>
     </div>
   </nav>
 
-  <!-- Hero / Busca -->
+  <!-- Hero -->
   <section class="py-5 search-hero">
     <div class="container">
       <div class="row g-3 align-items-end">
         <div class="col-12 col-lg-6">
-          <h1 class="fw-bold mb-2">Descubra livros, filmes, animes e séries</h1>
-          <p class="text-secondary mb-0">Busca pública. Para comentar, faça login.</p>
-        </div>
-        <div class="col-12 col-lg-6">
-          <div class="row g-2">
-            <div class="col-12 col-md-6">
-              <input id="q" type="search" class="form-control form-control-lg"
-                placeholder="Buscar por título ou sinopse…">
-            </div>
-            <div class="col-4 col-md-3">
-              <select id="typeFilter" class="form-select">
-                <option value="">Todos</option>
-                <option value="BOOK">Livros</option>
-                <option value="MOVIE">Filmes</option>
-                <option value="ANIME">Animes</option>
-                <option value="SERIES">Séries</option>
-              </select>
-            </div>
-            <div class="col-3 col-md-3">
-              <button type="button" class="btn form-button">Buscar</button>
-            </div>
-            <div class="col-12">
-              <div class="d-flex flex-wrap gap-2">
-                <button data-type="" class="btn btn-sm btn-outline-light px-3 type-chip active">Todos</button>
-                <button data-type="BOOK" class="btn btn-sm btn-outline-light px-3 type-chip">Livro</button>
-                <button data-type="MOVIE" class="btn btn-sm btn-outline-light px-3 type-chip">Filme</button>
-                <button data-type="ANIME" class="btn btn-sm btn-outline-light px-3 type-chip">Anime</button>
-                <button data-type="SERIES" class="btn btn-sm btn-outline-light px-3 type-chip">Série</button>
-                <span id="resultCount" class="ms-auto text-secondary small"></span>
-              </div>
-            </div>
-          </div>
+          <h1 class="fw-bold mb-2">Controle suas despesas pessoais</h1>
+          <p class="text-secondary mb-0">Mantenha suas finanças organizadas e em dia.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Grid -->
-  <main class="py-4">
+  <!-- Formulário de Cadastro de Despesas -->
+  <section class="py-4">
     <div class="container">
-      <div id="grid" class="row g-3">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-          <div class="card h-100 shadow-sm">
-            <img class="cover" src="https://placehold.co/600x400" alt="Capa de Teste">
-            <div class="card-body d-flex flex-column">
-              <div class="d-flex justify-content-between align-items-start mb-2">
-                <h5 class="card-title me-2">Teste</h5>
-                <span class="badge badge-type ${b.cls}">Teste</span>
-              </div>
-              <p class="card-text text-secondary small mb-3">Resumo</p>
-              <div class="mt-auto d-flex justify-content-between align-items-center">
-                <small class="text-secondary">Data Lançamento</small>
-                <a class="stretched-link" href="/item/id">Detalhes</a>
-              </div>
-            </div>
+      <form id="despesaForm">
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <input id="descricao" type="text" class="form-control" placeholder="Descrição da despesa">
+          </div>
+          <div class="col-12 col-md-4">
+            <select id="categoria" type="text" class="form-control" placeholder="Categoria (Ex: Alimentação)">
+              <% categorias.forEach(cat => { %>
+                <option> <%= cat.nome %> </option>
+              <% }) %>
+          
+            </select>
+          </div>
+          <div class="col-12 col-md-4">
+            <select id="pagamento" type="text" class="form-control" placeholder="Forma de Pagamento (Ex: Pix)">
+              <option>Pix</option>
+              <option>Cartão de Debito</option>
+              <option>Cartão de Crédito</option>
+              <option>Boleto</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-2">
+            <input id="valor" type="number" class="form-control" placeholder="Valor" step="0.01">
+          </div>
+          <div class="col-12 col-md-2">
+            <button type="submit" class="btn form-button w-100">Adicionar Despesa</button>
           </div>
         </div>
-      </div>
+      </form>
+    </div>
+  </section>
 
-      <!-- Paginação -->
-      <nav class="mt-4">
-        <ul id="pagination" class="pagination justify-content-center"></ul>
-      </nav>
+  <!-- Tabela de Despesas -->
+  <main class="py-4">
+    <div class="container">
+      <h3>Despesas Registradas</h3>
+      <div class="table-responsive">
+        <table class="table table-dark table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Valor</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="despesasTabela">
+            <!-- Despesas via JS -->
+          </tbody>
+        </table>
+      </div>
+      <div class="text-end total mt-3">
+        Total: R$ <span id="totalValor">0.00</span>
+      </div>
     </div>
   </main>
 
   <footer class="py-4 border-top border-secondary" style="border-color:#232833!important;">
     <div class="container text-center text-secondary small">
-      © <span id="year"></span> Catálogo Geek.
+      © <span id="year"></span> Controle de Despesas.
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const despesaForm = document.getElementById('despesaForm');
+      const despesasTabela = document.getElementById('despesasTabela');
+      const totalValor = document.getElementById('totalValor');
+
+      // Carregar despesas do localStorage
+      let despesas = JSON.parse(localStorage.getItem('despesas')) || [];
+
+      // Atualiza a tabela
+      function atualizarTabela() {
+        despesasTabela.innerHTML = '';
+        let total = 0;
+
+        despesas.forEach((d, i) => {
+          total += parseFloat(d.valor);
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${d.descricao}</td>
+            <td>${d.categoria}</td>
+            <td>R$ ${parseFloat(d.valor).toFixed(2)}</td>
+            <td>
+              <button class="btn btn-sm btn-danger" onclick="removerDespesa(${i})">Remover</button>
+            </td>
+          `;
+          despesasTabela.appendChild(row);
+        });
+
+        totalValor.textContent = total.toFixed(2);
+        localStorage.setItem('despesas', JSON.stringify(despesas));
+      }
+
+      // Adicionar despesa
+      despesaForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const descricao = document.getElementById('descricao').value.trim();
+        const categoria = document.getElementById('categoria').value.trim();
+        const valor = parseFloat(document.getElementById('valor').value);
+
+        if (!descricao || !categoria || !valor) {
+          alert("Por favor, preencha todos os campos!");
+          return;
+        }
+
+        despesas.push({ descricao, categoria, valor });
+        atualizarTabela();
+        despesaForm.reset();
+      });
+
+      // Remover despesa (função global)
+      window.removerDespesa = (index) => {
+        if (confirm("Deseja realmente remover esta despesa?")) {
+          despesas.splice(index, 1);
+          atualizarTabela();
+        }
+      };
+
+      // Atualiza ano no rodapé
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Exibe despesas salvas
+      atualizarTabela();
+    });
+  </script>
 </body>
 
 </html>

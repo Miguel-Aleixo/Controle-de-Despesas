@@ -39,7 +39,7 @@ export const criarUsuario = async (req: Request, res: Response) => {
         };
         
         await postUser(user);
-        res.status(201).render('cadastro', { message: {
+        res.status(201).render('login', { message: {
             type: 'sucess',
             value: 'Usuario cadastrado'
         }});
