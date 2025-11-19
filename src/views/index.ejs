@@ -6,225 +6,381 @@
   <title>Controle de Despesas</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    crossorigin="anonymous">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* GLOBAL */
     body {
-      background: #0b0d10;
-      color: #e8eaed;
+      background: #0d1117;
+      color: #e6edf3;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
-    .navbar,
-    .offcanvas {
-      background: #14181f;
+    .container-custom {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px;
     }
 
-    .card {
-      background: #171a21;
-      border: 1px solid #232833;
-      height: 100%;
+    /* NAVBAR */
+    nav {
+      background: rgba(13, 17, 23, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #21262d;
+      padding: 12px 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
 
-    .badge-type {
-      letter-spacing: .3px;
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: #e6edf3;
+      text-decoration: none;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .nav-btn-outline {
+      padding: 6px 14px;
+      border-radius: 9px;
+      border: 1.5px solid #2d333b;
+      background: transparent;
+      color: #e6edf3;
+      cursor: pointer;
+      text-decoration: none;
+      transition: .2s;
+      font-size: 0.9rem;
+    }
+
+    .nav-btn-outline:hover {
+      background: #2385ff22;
+      border-color: #2385ff;
+    }
+
+    .nav-btn-outline.green:hover {
+      background: #2ecc7122;
+      border-color: #2ecc71;
+    }
+
+    .nav-btn-outline.yellow:hover {
+      background: #f1c40f22;
+      border-color: #f1c40f;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 60px 0;
+      background: linear-gradient(135deg, #161b22 0%, #0d1117 60%);
+      border-bottom: 1px solid #21262d;
+    }
+
+    /* CARD */
+    .card-custom {
+      background: #161b22;
+      border: 1px solid #2d333b;
+      border-radius: 14px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    /* FORM */
+    .form-group {
+      margin-bottom: 16px;
     }
 
     .form-control,
-    .form-select,
-    .form-button {
-      background: #0f131a;
-      color: #e8eaed;
-      border-color: #232833;
+    .form-select {
+      width: 100%;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 10px 12px;
+      transition: .2s;
+      font-size: 0.95rem;
     }
 
-    .form-button {
-      background: #0758d2;
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #579aff;
+      box-shadow: 0 0 0 4px rgba(120, 160, 255, 0.25);
+      outline: none;
     }
 
-    .form-control::placeholder {
-      color: #9aa4af;
-    }
-
-    .page-link {
-      background: #0f131a;
-      color: #e8eaed;
-      border-color: #232833;
-    }
-
-    .page-item.active .page-link {
-      background: #375a7f;
-      border-color: #375a7f;
-    }
-
-    a,
-    a:hover {
-      color: #9ad0ff;
-    }
-
-    .total {
-      font-size: 1.2rem;
+    .btn-main {
+      width: 100%;
+      background: #2385ff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
       font-weight: 600;
-      color: #9ad0ff;
+      transition: .2s;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .btn-main:hover {
+      background: #1f74db;
+    }
+
+    /* TABLE */
+    .table-custom {
+      background: #161b22;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #2d333b;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table thead {
+      background: #1c2128;
+    }
+
+    table th,
+    table td {
+      padding: 14px;
+      border-bottom: 1px solid #262c33;
+    }
+
+    table th {
+      color: #9eb4c1;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    table td {
+      color: #c9d1d9;
+    }
+
+    tr:hover td {
+      background: #1c2128 !important;
+    }
+
+    .btn-danger {
+      padding: 6px 12px;
+      border-radius: 10px;
+      border: none;
+      background: #d9534f;
+      color: #fff;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .btn-danger:hover {
+      background: #c9302c;
+    }
+
+    /* TOTAL */
+    .total-box {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 15px 20px;
+      font-size: 1.3rem;
+      text-align: right;
+      color: #2385ff;
+      font-weight: 700;
+      margin-top: 14px;
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 30px;
+      border-top: 1px solid #21262d;
+      background: #0f141a;
+      padding: 20px;
+      color: #8b949e;
+      text-align: center;
     }
   </style>
 </head>
 
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="#">Controle de Despesas</a>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="container-custom navbar-content">
+
+      <a class="navbar-brand" href="#">Controle de Despesas</a>
+
+      <div class="nav-buttons">
+
+        <a href="/usuario/login" class="nav-btn-outline">Login</a>
+
+        <a href="/usuario/cadastro" class="nav-btn-outline green">Cadastrar Usuário</a>
+
+        <a href="/cadastrar_categoria" class="nav-btn-outline yellow">Cadastrar Categoria</a>
+
+      </div>
+
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="py-5 search-hero">
-    <div class="container">
-      <div class="row g-3 align-items-end">
-        <div class="col-12 col-lg-6">
-          <h1 class="fw-bold mb-2">Controle suas despesas pessoais</h1>
-          <p class="text-secondary mb-0">Mantenha suas finanças organizadas e em dia.</p>
-        </div>
-      </div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container-custom">
+      <h1 class="fw-bold mb-2">Gerencie suas despesas com facilidade</h1>
+      <p class="text-secondary">Organização financeira simples, rápida e eficiente.</p>
     </div>
   </section>
 
-  <!-- Formulário de Cadastro de Despesas -->
+  <!-- FORM -->
   <section class="py-4">
-    <div class="container">
-      <form id="despesaForm">
-        <div class="row g-3">
-          <div class="col-12 col-md-4">
-            <input id="descricao" type="text" class="form-control" placeholder="Descrição da despesa">
+    <div class="container-custom">
+
+      <div class="card-custom">
+
+        <h4 class="mb-3">Adicionar Nova Despesa</h4>
+
+        <form id="despesaForm">
+
+          <div class="form-group">
+            <input id="descricao" type="text" class="form-control" placeholder="Descrição">
           </div>
-          <div class="col-12 col-md-4">
-            <select id="categoria" type="text" class="form-control" placeholder="Categoria (Ex: Alimentação)">
+
+          <div class="form-group">
+            <select id="categoria" class="form-select">
               <% categorias.forEach(cat => { %>
-                <option> <%= cat.nome %> </option>
+                <option><%= cat.nome %></option>
               <% }) %>
-          
             </select>
           </div>
-          <div class="col-12 col-md-4">
-            <select id="pagamento" type="text" class="form-control" placeholder="Forma de Pagamento (Ex: Pix)">
+
+          <div class="form-group">
+            <select id="pagamento" class="form-select">
               <option>Pix</option>
-              <option>Cartão de Debito</option>
-              <option>Cartão de Crédito</option>
+              <option>Cartão Débito</option>
+              <option>Cartão Crédito</option>
               <option>Boleto</option>
               <option>Outro</option>
             </select>
           </div>
-          <div class="col-12 col-md-2">
+
+          <div class="form-group">
             <input id="valor" type="number" class="form-control" placeholder="Valor" step="0.01">
           </div>
-          <div class="col-12 col-md-2">
-            <button type="submit" class="btn form-button w-100">Adicionar Despesa</button>
-          </div>
-        </div>
-      </form>
+
+          <button class="btn-main" type="submit">Adicionar</button>
+
+        </form>
+      </div>
     </div>
   </section>
 
-  <!-- Tabela de Despesas -->
+  <!-- TABLE -->
   <main class="py-4">
-    <div class="container">
-      <h3>Despesas Registradas</h3>
-      <div class="table-responsive">
-        <table class="table table-dark table-striped align-middle">
+    <div class="container-custom">
+
+      <h3 class="mb-3">Despesas Registradas</h3>
+
+      <div class="table-custom">
+        <table>
           <thead>
             <tr>
               <th>Descrição</th>
               <th>Categoria</th>
               <th>Valor</th>
-              <th>Ações</th>
+              <th style="width: 90px;">Ações</th>
             </tr>
           </thead>
-          <tbody id="despesasTabela">
-            <!-- Despesas via JS -->
-          </tbody>
+          <tbody id="despesasTabela"></tbody>
         </table>
       </div>
-      <div class="text-end total mt-3">
+
+      <div class="total-box">
         Total: R$ <span id="totalValor">0.00</span>
       </div>
+
     </div>
   </main>
 
-  <footer class="py-4 border-top border-secondary" style="border-color:#232833!important;">
-    <div class="container text-center text-secondary small">
-      © <span id="year"></span> Controle de Despesas.
-    </div>
+  <!-- FOOTER -->
+  <footer>
+    © <span id="year"></span> Controle de Despesas — Todos os direitos reservados.
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    crossorigin="anonymous"></script>
-
+  <!-- JS -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const despesaForm = document.getElementById('despesaForm');
-      const despesasTabela = document.getElementById('despesasTabela');
-      const totalValor = document.getElementById('totalValor');
+      const despesaForm = document.getElementById("despesaForm");
+      const despesasTabela = document.getElementById("despesasTabela");
+      const totalValor = document.getElementById("totalValor");
 
-      // Carregar despesas do localStorage
-      let despesas = JSON.parse(localStorage.getItem('despesas')) || [];
+      let despesas = JSON.parse(localStorage.getItem("despesas")) || [];
 
-      // Atualiza a tabela
       function atualizarTabela() {
-        despesasTabela.innerHTML = '';
+        despesasTabela.innerHTML = "";
         let total = 0;
 
         despesas.forEach((d, i) => {
           total += parseFloat(d.valor);
-          const row = document.createElement('tr');
+
+          const row = document.createElement("tr");
           row.innerHTML = `
             <td>${d.descricao}</td>
             <td>${d.categoria}</td>
             <td>R$ ${parseFloat(d.valor).toFixed(2)}</td>
             <td>
-              <button class="btn btn-sm btn-danger" onclick="removerDespesa(${i})">Remover</button>
+              <button class="btn-danger" onclick="removerDespesa(${i})">Excluir</button>
             </td>
           `;
           despesasTabela.appendChild(row);
         });
 
         totalValor.textContent = total.toFixed(2);
-        localStorage.setItem('despesas', JSON.stringify(despesas));
+        localStorage.setItem("despesas", JSON.stringify(despesas));
       }
 
-      // Adicionar despesa
-      despesaForm.addEventListener('submit', (e) => {
+      despesaForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const descricao = document.getElementById('descricao').value.trim();
-        const categoria = document.getElementById('categoria').value.trim();
-        const valor = parseFloat(document.getElementById('valor').value);
+        const desc = descricao.value.trim();
+        const categoriaVal = categoria.value.trim();
+        const valorVal = parseFloat(valor.value);
 
-        if (!descricao || !categoria || !valor) {
-          alert("Por favor, preencha todos os campos!");
+        if (!desc || !categoriaVal || !valorVal) {
+          alert("Preencha todos os campos!");
           return;
         }
 
-        despesas.push({ descricao, categoria, valor });
+        despesas.push({ descricao: desc, categoria: categoriaVal, valor: valorVal });
         atualizarTabela();
         despesaForm.reset();
       });
 
-      // Remover despesa (função global)
-      window.removerDespesa = (index) => {
-        if (confirm("Deseja realmente remover esta despesa?")) {
-          despesas.splice(index, 1);
+      window.removerDespesa = (i) => {
+        if (confirm("Deseja remover esta despesa?")) {
+          despesas.splice(i, 1);
           atualizarTabela();
         }
       };
 
-      // Atualiza ano no rodapé
-      document.getElementById('year').textContent = new Date().getFullYear();
-
-      // Exibe despesas salvas
+      document.getElementById("year").textContent = new Date().getFullYear();
       atualizarTabela();
     });
   </script>
+
 </body>
 
 </html>
+  
