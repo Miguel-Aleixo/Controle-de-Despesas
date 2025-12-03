@@ -14,6 +14,10 @@ app.get('/', function (req, res) {
     res.render('login', { message: 'Hello' });
 });
 
+app.get('/dashboard', function (req, res) {
+    res.render('dashboard');
+});
+
 app.use(userRoutes);
 
 app.use(categoriaRoutes);

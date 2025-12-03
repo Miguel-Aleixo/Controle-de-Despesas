@@ -3,20 +3,60 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Controle de Despesas</title>
+  <title>Controle de Despesas Moderno</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Google Font -->
+  <!-- Fontes e Ícones -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <style>
+    /* --- Variáveis de Tema (Dark Mode como Padrão) --- */
+    :root {
+      /* Dark Mode (Padrão) */
+      --cor-fundo-principal: #0a0a0a;
+      --cor-fundo-secundario: #1c1c1c;
+      --cor-card: #121212;
+      --cor-texto-principal: #f0f0f0;
+      --cor-texto-secundario: #cccccc;
+      --cor-acento: #00bcd4; /* Ciano Vibrante */
+      --cor-acento-hover: #0097a7;
+      --cor-perigo: #ff5252;
+      --cor-borda: #333333;
+      --cor-tabela-header: #222222;
+      --sombra-leve: 0 2px 4px rgba(0, 0, 0, 0.4);
+      --sombra-media: 0 4px 12px rgba(0, 0, 0, 0.6);
+      --transicao-padrao: 0.3s ease;
+    }
+
+    body.light-mode {
+      /* Light Mode (Alternativo) */
+      --cor-fundo-principal: #f4f7f9;
+      --cor-fundo-secundario: #ffffff;
+      --cor-card: #ffffff;
+      --cor-texto-principal: #34495e;
+      --cor-texto-secundario: #6c7a89;
+      --cor-acento: #3498db;
+      --cor-acento-hover: #2980b9;
+      --cor-perigo: #e74c3c;
+      --cor-borda: #e0e0e0;
+      --cor-tabela-header: #ecf0f1;
+      --sombra-leve: 0 2px 4px rgba(0, 0, 0, 0.05);
+      --sombra-media: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
     /* GLOBAL */
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      background: #0d1117;
-      color: #e6edf3;
+      background: var(--cor-fundo-principal);
+      color: var(--cor-texto-principal);
       font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
+      transition: background-color var(--transicao-padrao), color var(--transicao-padrao);
     }
 
     .container-custom {
@@ -27,13 +67,13 @@
 
     /* NAVBAR */
     nav {
-      background: rgba(13, 17, 23, 0.85);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid #21262d;
+      background: var(--cor-card);
+      border-bottom: 1px solid var(--cor-borda);
       padding: 12px 0;
       position: sticky;
       top: 0;
       z-index: 50;
+      box-shadow: var(--sombra-leve);
     }
 
     .navbar-content {
@@ -44,107 +84,139 @@
 
     .navbar-brand {
       font-weight: 700;
-      font-size: 1.35rem;
-      color: #e6edf3;
+      font-size: 1.5rem;
+      color: var(--cor-acento);
       text-decoration: none;
     }
 
     .nav-buttons {
       display: flex;
-      gap: 10px;
+      gap: 15px;
       align-items: center;
     }
 
     .nav-btn-outline {
-      padding: 6px 14px;
-      border-radius: 9px;
-      border: 1.5px solid #2d333b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--cor-borda);
       background: transparent;
-      color: #e6edf3;
+      color: var(--cor-texto-principal);
       cursor: pointer;
       text-decoration: none;
-      transition: .2s;
+      transition: var(--transicao-padrao);
       font-size: 0.9rem;
+      font-weight: 600;
     }
 
     .nav-btn-outline:hover {
-      background: #2385ff22;
-      border-color: #2385ff;
+      background: rgba(0, 188, 212, 0.1);
+      border-color: var(--cor-acento);
+      color: var(--cor-acento);
     }
 
-    .nav-btn-outline.green:hover {
-      background: #2ecc7122;
+    .nav-btn-outline.green {
+      color: #2ecc71;
       border-color: #2ecc71;
     }
 
-    .nav-btn-outline.yellow:hover {
-      background: #f1c40f22;
+    .nav-btn-outline.green:hover {
+      background: rgba(46, 204, 113, 0.1);
+      color: #2ecc71;
+    }
+
+    .nav-btn-outline.yellow {
+      color: #f1c40f;
       border-color: #f1c40f;
+    }
+
+    .nav-btn-outline.yellow:hover {
+      background: rgba(241, 196, 15, 0.1);
+      color: #f1c40f;
     }
 
     /* HERO */
     .hero {
-      padding: 60px 0;
-      background: linear-gradient(135deg, #161b22 0%, #0d1117 60%);
-      border-bottom: 1px solid #21262d;
+      padding: 80px 0;
+      background: linear-gradient(135deg, var(--cor-fundo-secundario) 0%, var(--cor-fundo-principal) 60%);
+      border-bottom: 1px solid var(--cor-borda);
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--cor-texto-principal);
+    }
+
+    .hero p {
+      color: var(--cor-texto-secundario);
+      font-size: 1.1rem;
     }
 
     /* CARD */
     .card-custom {
-      background: #161b22;
-      border: 1px solid #2d333b;
-      border-radius: 14px;
-      padding: 20px;
-      margin-top: 20px;
+      background: var(--cor-card);
+      border: 1px solid var(--cor-borda);
+      border-radius: 12px;
+      padding: 25px;
+      margin-top: 30px;
+      box-shadow: var(--sombra-media);
     }
 
     /* FORM */
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .form-control,
     .form-select {
       width: 100%;
-      background: #0d1117;
-      border: 1px solid #30363d;
-      color: #e6edf3;
-      border-radius: 10px;
-      padding: 10px 12px;
-      transition: .2s;
-      font-size: 0.95rem;
+      background: var(--cor-fundo-principal);
+      border: 1px solid var(--cor-borda);
+      color: var(--cor-texto-principal);
+      border-radius: 8px;
+      padding: 12px;
+      transition: var(--transicao-padrao);
+      font-size: 1rem;
     }
 
     .form-control:focus,
     .form-select:focus {
-      border-color: #579aff;
-      box-shadow: 0 0 0 4px rgba(120, 160, 255, 0.25);
+      border-color: var(--cor-acento);
+      box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.25);
       outline: none;
     }
 
     .btn-main {
       width: 100%;
-      background: #2385ff;
+      background: var(--cor-acento);
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 12px;
-      font-weight: 600;
-      transition: .2s;
+      font-weight: 700;
+      transition: var(--transicao-padrao);
       cursor: pointer;
-      color: #fff;
+      color: #0a0a0a; /* Texto escuro no botão de acento */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .btn-main:hover {
-      background: #1f74db;
+      background: var(--cor-acento-hover);
     }
 
     /* TABLE */
     .table-custom {
-      background: #161b22;
+      background: var(--cor-card);
       border-radius: 12px;
       overflow: hidden;
-      border: 1px solid #2d333b;
+      border: 1px solid var(--cor-borda);
       margin-top: 20px;
+      box-shadow: var(--sombra-media);
     }
 
     table {
@@ -153,37 +225,42 @@
     }
 
     table thead {
-      background: #1c2128;
+      background: var(--cor-tabela-header);
     }
 
     table th,
     table td {
-      padding: 14px;
-      border-bottom: 1px solid #262c33;
+      padding: 15px;
+      border-bottom: 1px solid var(--cor-borda);
     }
 
     table th {
-      color: #9eb4c1;
+      color: var(--cor-texto-secundario);
       text-align: left;
       font-weight: 600;
+      font-size: 0.9rem;
     }
 
     table td {
-      color: #c9d1d9;
+      color: var(--cor-texto-principal);
     }
 
     tr:hover td {
-      background: #1c2128 !important;
+      background: var(--cor-fundo-secundario) !important;
     }
 
     .btn-danger {
-      padding: 6px 12px;
-      border-radius: 10px;
+      padding: 8px 14px;
+      border-radius: 8px;
       border: none;
-      background: #d9534f;
+      background: var(--cor-perigo);
       color: #fff;
       cursor: pointer;
-      transition: .2s;
+      transition: var(--transicao-padrao);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .btn-danger:hover {
@@ -192,44 +269,86 @@
 
     /* TOTAL */
     .total-box {
-      background: #161b22;
-      border: 1px solid #30363d;
+      background: var(--cor-card);
+      border: 1px solid var(--cor-borda);
       border-radius: 12px;
-      padding: 15px 20px;
-      font-size: 1.3rem;
+      padding: 20px;
+      font-size: 1.5rem;
       text-align: right;
-      color: #2385ff;
+      color: var(--cor-acento);
       font-weight: 700;
-      margin-top: 14px;
+      margin-top: 20px;
+      box-shadow: var(--sombra-leve);
     }
 
     /* FOOTER */
     footer {
-      margin-top: 30px;
-      border-top: 1px solid #21262d;
-      background: #0f141a;
-      padding: 20px;
-      color: #8b949e;
+      margin-top: 40px;
+      border-top: 1px solid var(--cor-borda);
+      background: var(--cor-card);
+      padding: 25px;
+      color: var(--cor-texto-secundario);
       text-align: center;
+      font-size: 0.9rem;
+    }
+
+    /* DARK MODE TOGGLE */
+    .theme-switcher {
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: var(--cor-texto-principal);
+      transition: color var(--transicao-padrao);
+    }
+
+    .theme-switcher:hover {
+      color: var(--cor-acento);
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        gap: 10px;
+      }
+      .nav-btn-outline {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+      .nav-btn-outline span {
+        display: none; /* Esconde o texto nos botões em telas pequenas */
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .total-box {
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
 
-<body>
+<body class="dark-mode">
 
   <!-- NAVBAR -->
   <nav>
     <div class="container-custom navbar-content">
 
-      <a class="navbar-brand" href="#">Controle de Despesas</a>
+      <a class="navbar-brand" href="#"><i class="fas fa-wallet"></i> Controle de Despesas</a>
 
       <div class="nav-buttons">
+        <!-- Botão de Dark Mode -->
+        <i id="theme-toggle" class="fas fa-sun theme-switcher"></i>
 
-        <a href="/usuario/login" class="nav-btn-outline">Login</a>
+        <a href="/usuario/login" class="nav-btn-outline">
+          <i class="fas fa-sign-in-alt"></i> <span>Login</span>
+        </a>
 
-        <a href="/usuario/cadastro" class="nav-btn-outline green">Cadastrar Usuário</a>
+        <a href="/usuario/cadastro" class="nav-btn-outline green">
+          <i class="fas fa-user-plus"></i> <span>Cadastrar Usuário</span>
+        </a>
 
-        <a href="/cadastrar_categoria" class="nav-btn-outline yellow">Cadastrar Categoria</a>
+        <a href="/cadastrar_categoria" class="nav-btn-outline yellow">
+          <i class="fas fa-tags"></i> <span>Cadastrar Categoria</span>
+        </a>
 
       </div>
 
@@ -239,30 +358,34 @@
   <!-- HERO -->
   <section class="hero">
     <div class="container-custom">
-      <h1 class="fw-bold mb-2">Gerencie suas despesas com facilidade</h1>
-      <p class="text-secondary">Organização financeira simples, rápida e eficiente.</p>
+      <h1>Gerencie suas despesas com facilidade</h1>
+      <p>Organização financeira simples, rápida e eficiente.</p>
     </div>
   </section>
 
   <!-- FORM -->
-  <section class="py-4">
+  <section style="padding: 30px 0;">
     <div class="container-custom">
 
       <div class="card-custom">
 
-        <h4 class="mb-3">Adicionar Nova Despesa</h4>
+        <h4 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--cor-texto-principal);">
+          <i class="fas fa-file-invoice-dollar"></i> Adicionar Nova Despesa
+        </h4>
 
         <form id="despesaForm">
 
           <div class="form-group">
-            <input id="descricao" type="text" class="form-control" placeholder="Descrição">
+            <input id="descricao" type="text" class="form-control" placeholder="Descrição da Despesa">
           </div>
 
           <div class="form-group">
             <select id="categoria" class="form-select">
+              <!-- Conteúdo EJS Preservado -->
               <% categorias.forEach(cat => { %>
                 <option><%= cat.nome %></option>
               <% }) %>
+              <!-- Fim do Conteúdo EJS -->
             </select>
           </div>
 
@@ -277,10 +400,12 @@
           </div>
 
           <div class="form-group">
-            <input id="valor" type="number" class="form-control" placeholder="Valor" step="0.01">
+            <input id="valor" type="number" class="form-control" placeholder="Valor (R$)" step="0.01">
           </div>
 
-          <button class="btn-main" type="submit">Adicionar</button>
+          <button class="btn-main" type="submit">
+            <i class="fas fa-plus-circle"></i> Adicionar Despesa
+          </button>
 
         </form>
       </div>
@@ -288,10 +413,12 @@
   </section>
 
   <!-- TABLE -->
-  <main class="py-4">
+  <main style="padding-bottom: 30px;">
     <div class="container-custom">
 
-      <h3 class="mb-3">Despesas Registradas</h3>
+      <h3 style="font-size: 1.8rem; margin-bottom: 15px; color: var(--cor-texto-principal);">
+        <i class="fas fa-list-alt"></i> Despesas Registradas
+      </h3>
 
       <div class="table-custom">
         <table>
@@ -300,7 +427,7 @@
               <th>Descrição</th>
               <th>Categoria</th>
               <th>Valor</th>
-              <th style="width: 90px;">Ações</th>
+              <th style="width: 100px;">Ações</th>
             </tr>
           </thead>
           <tbody id="despesasTabela"></tbody>
@@ -325,9 +452,29 @@
       const despesaForm = document.getElementById("despesaForm");
       const despesasTabela = document.getElementById("despesasTabela");
       const totalValor = document.getElementById("totalValor");
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const body = document.body;
 
       let despesas = JSON.parse(localStorage.getItem("despesas")) || [];
 
+      // --- Lógica do Tema (Dark Mode) ---
+      const currentTheme = localStorage.getItem('theme') || 'dark'; // Padrão Dark Mode
+      body.classList.toggle('light-mode', currentTheme === 'light');
+      themeToggleBtn.classList.toggle('fa-sun', currentTheme === 'dark');
+      themeToggleBtn.classList.toggle('fa-moon', currentTheme === 'light');
+
+      themeToggleBtn.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        const isLightMode = body.classList.contains('light-mode');
+        const newTheme = isLightMode ? 'light' : 'dark';
+        localStorage.setItem('theme', newTheme);
+        
+        // Atualiza o ícone
+        themeToggleBtn.classList.toggle('fa-sun', newTheme === 'dark');
+        themeToggleBtn.classList.toggle('fa-moon', newTheme === 'light');
+      });
+
+      // --- Lógica da Tabela ---
       function atualizarTabela() {
         despesasTabela.innerHTML = "";
         let total = 0;
@@ -341,7 +488,9 @@
             <td>${d.categoria}</td>
             <td>R$ ${parseFloat(d.valor).toFixed(2)}</td>
             <td>
-              <button class="btn-danger" onclick="removerDespesa(${i})">Excluir</button>
+              <button class="btn-danger" onclick="removerDespesa(${i})">
+                <i class="fas fa-trash-alt"></i> Excluir
+              </button>
             </td>
           `;
           despesasTabela.appendChild(row);
@@ -351,6 +500,7 @@
         localStorage.setItem("despesas", JSON.stringify(despesas));
       }
 
+      // --- Event Listeners ---
       despesaForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -383,4 +533,3 @@
 </body>
 
 </html>
-  

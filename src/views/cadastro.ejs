@@ -4,61 +4,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
+    <title>Cadastro e Login Moderno</title>
+    <!-- Bootstrap 5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
+        /* --- Custom Dark Mode Overrides (Mais Escuro) --- */
+        :root, [data-bs-theme="dark"] {
+            --bs-body-bg: #0a0a0a; /* Fundo Principal */
+            --bs-body-color: #f0f0f0; /* Texto Principal */
+            --bs-bg-body: #1c1c1c; /* Fundo do Container (Card) */
+            --bs-border-color: #333333; /* Bordas */
+            --bs-success: #00bcd4; /* Cor de Destaque (Ciano Vibrante) */
+            --bs-success-rgb: 0, 188, 212;
+            --bs-form-control-bg: #121212; /* Fundo dos Inputs */
+            --bs-form-control-color: #f0f0f0;
+            --bs-form-control-border-color: #333333;
+            --bs-form-control-focus-border-color: #00bcd4;
+            --bs-form-control-focus-shadow: 0 0 0 0.25rem rgba(0, 188, 212, 0.25);
+            --bs-nav-link-color: #cccccc;
+            --bs-nav-link-hover-color: #00bcd4;
+            --bs-nav-tabs-border-color: #333333;
+            --bs-nav-tabs-link-active-bg: #1c1c1c;
+            --bs-nav-tabs-link-active-border-color: #333333 #333333 #1c1c1c;
+        }
+
+        /* GLOBAL */
         body {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
             background-color: var(--bs-body-bg);
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease;
         }
 
         .form-container {
             width: 100%;
-            max-width: 400px;
-            padding: 2rem;
+            max-width: 450px;
+            padding: 2.5rem; /* Mais padding */
             border-radius: 1rem;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            background-color: var(--bs-bg-body) !important; /* Usando a cor mais escura */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7); /* Sombra mais intensa */
+            border: 1px solid var(--bs-border-color);
+        }
+
+        /* Ícones nos Inputs */
+        .input-group-text {
+            background-color: var(--bs-form-control-bg);
+            border-color: var(--bs-form-control-border-color);
+            color: var(--bs-nav-link-color);
+        }
+
+        /* Botão de Destaque */
+        .btn-success {
+            background-color: var(--bs-success) !important;
+            border-color: var(--bs-success) !important;
+            font-weight: 600;
+            color: #0a0a0a !important; /* Texto preto no botão ciano */
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #0097a7 !important;
+            border-color: #0097a7 !important;
+        }
+
+        /* Tabs */
+        .nav-tabs .nav-link {
+            font-weight: 600;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--bs-success);
         }
     </style>
 </head>
 
 <body>
-    <div class="form-container bg-body">
-        <ul class="nav nav-tabs mb-3" id="tabForm" role="tablist">
+    <div class="form-container">
+        <h2 class="text-center mb-4" style="color: var(--bs-success);">
+            <i class="fas fa-user-circle"></i> Acesso ao Sistema
+        </h2>
+
+        <ul class="nav nav-tabs mb-4" id="tabForm" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link" href="/usuario/login">Login</a>
+                <!-- Mantendo a classe 'nav-link' para estilização, mas é um link -->
+                <a class="nav-link" href="/usuario/login">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="register-tab" data-bs-toggle="tab" data-bs-target="#register"
-                    type="button" role="tab">Cadastro</button>
+                    type="button" role="tab">
+                    <i class="fas fa-user-plus"></i> Cadastro
+                </button>
             </li>
         </ul>
         <div class="tab-content">
             <!-- Cadastro -->
             <div class="tab-pane fade show active" id="register">
-                <h4 class="mb-3">Cadastro</h4>
                 <form method="post" action="/usuario/registrar">
                     <div class="mb-3">
                         <label for="registerName" class="form-label">Nome</label>
-                        <input type="text" class="form-control" name="nome" id="registerName" required>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" name="nome" id="registerName" required placeholder="Seu nome completo">
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="registerEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" id="registerEmail" required>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control" name="email" id="registerEmail" required placeholder="seu.email@exemplo.com">
+                        </div>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="registerPassword" class="form-label">Senha</label>
-                        <input type="password" class="form-control" name="senha" id="registerPassword" required>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" name="senha" id="registerPassword" required placeholder="Mínimo 6 caracteres">
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-success w-100">Cadastrar</button>
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="fas fa-check-circle"></i> Cadastrar
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 
+    <!-- Bootstrap JS e SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
