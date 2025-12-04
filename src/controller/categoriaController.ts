@@ -35,7 +35,7 @@ export const criarCategoria = async (req: Request, res: Response) => {
         };
         
         await postCategoria(categoria);
-        res.status(201).render('cadastrar_categoria', { message: {
+        res.status(201).render('dashboard', { message: {
             type: 'sucess',
             value: 'Categoria cadastrada'
         }});

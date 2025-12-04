@@ -1,94 +1,162 @@
 import { Request, Response } from "express";
-import { deleteUser, getUsers, postUser, putUser } from "../model/User";
+import { deleteUser, getUsers, postUser, putUser, loginUser } from "../model/User"; 
+
+interface FlashMessage {
+    type: 'success' | 'error' | 'warning';
+    value: string;
+    title?: string;
+}
+
+const handleControllerError = (res: Response, err: any, view: string, defaultTitle: string) => {
+    console.error(`[ERRO] ${defaultTitle}:`, err);
+    
+    const errorMessage: FlashMessage = {
+        type: 'error',
+        value: err instanceof Error ? err.message : 'Ocorreu um erro inesperado no servidor.',
+        title: defaultTitle
+    };
+    
+    res.status(500).render(view, { message: errorMessage });
+};
 
 // CARREGAR PAGINAS
 export function mostrarLogin(req: Request, res: Response) {
-    res.render('login', {message: ''});
+    res.render('login', { message: null });
 };
 
 export function mostrarCadastro(req: Request, res: Response) {
-    res.render('cadastro', {message: ''});
+    res.render('cadastro', { message: null });
 };
+
+// AUTENTICAÇÃO
+export const fazerLogin = async (req: Request, res: Response) => {
+    const view = 'login';
+    const successView = 'dashboard';
+    const errorTitle = 'Erro de Autenticação';
+
+    try {
+        const { email, senha } = req.body;
+
+        const user = await loginUser(email, senha);
+
+        if (!user) {
+            const message: FlashMessage = {
+                type: 'error',
+                value: 'Email ou senha inválidos.',
+                title: 'Falha no Login'
+            };
+            res.status(401).render(view, { message });
+            return;
+        };
+        
+     
+        req.session.user = { id: user.id, nome: user.nome, email: user.email };
+
+        const successMessage: FlashMessage = {
+            type: 'success',
+            value: `Bem-vindo(a), ${user.nome}!`,
+            title: 'Login bem-sucedido'
+        };
+        
+        res.status(200).render(successView, { message: successMessage });
+    } catch (err) {
+        handleControllerError(res, err, view, errorTitle);
+    }
+};
+
+export const fazerLogout = (req: Request, res: Response) => {
+    // @ts-ignore
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Erro ao destruir a sessão:', err);
+        }
+        res.redirect('/usuario/login');
+    });
+};
+
 
 // CRUD
 export const buscarUsuarios = async (req: Request, res: Response) => {
+    const view = 'list';
+    const errorTitle = 'Erro ao buscar usuários';
+
     try {
         const response = await getUsers();
 
-        res.status(200).render('list', { users: response });
+        res.status(200).render(view, { users: response });
     } catch (err) {
-        console.log(err);
-        res.status(500).render('list', { message: err });
+        handleControllerError(res, err, view, errorTitle);
     }
 };
 
 export const criarUsuario = async (req: Request, res: Response) => {
+    const view = 'cadastro';
+    const successView = 'login';
+    const errorTitle = 'Erro ao cadastrar usuário';
+
     try {
         const user = req.body;
 
         const response = await getUsers();
-
         if(response.some(r => r.email === user.email)) {
-            res.status(400).render('cadastro', {
-                message: {
-                    type: 'error',
-                    value: 'Já existe esse email'
-                }
-            });
+            const message: FlashMessage = {
+                type: 'error',
+                value: 'Já existe um usuário com este email.',
+                title: 'Duplicidade'
+            };
+            res.status(400).render(view, { message });
             return;
         };
         
         await postUser(user);
-        res.status(201).render('login', { message: {
-            type: 'sucess',
-            value: 'Usuario cadastrado'
-        }});
+
+        const successMessage: FlashMessage = {
+            type: 'success',
+            value: 'Usuário cadastrado com sucesso! Faça login para continuar.'
+        };
+        
+        res.status(201).render(successView, { message: successMessage });
     } catch (err) {
-        console.log(err);
-        res.status(500).render('cadastro', { message: {
-            type: 'error',
-            value: err,
-            title: 'Dados invalidos'
-        }});
+        handleControllerError(res, err, view, errorTitle);
     }
 };
 
 export const editarUsuario = async (req: Request, res: Response) => {
+    const view = 'login';
+    const errorTitle = 'Erro ao editar usuário';
+
     try {
         const usuario = req.body;
         
         await putUser(usuario);
 
-        res.status(201).render('login', { message: {
-            type: 'sucess',
-            value: 'Usuario editado'
-        }});
+        const successMessage: FlashMessage = {
+            type: 'success',
+            value: 'Usuário editado com sucesso!'
+        };
+
+        res.status(200).render(view, { message: successMessage });
     } catch (err) {
-        console.log(err);
-        res.status(500).render('login', { message: {
-            type: 'error',
-            value: err,
-            title: 'Erro ao editar'
-        }});
+        handleControllerError(res, err, view, errorTitle);
     }
 };
 
 export const deletarUsuario = async (req: Request, res: Response) => {
+    const view = 'login';
+    const errorTitle = 'Erro ao deletar usuário';
+
     try {
         const id = req.body;
         
         await deleteUser(id);
         
-        res.status(201).render('login', { message: {
-            type: 'sucess',
-            value: 'Usuario deletado'
-        }});
+        const successMessage: FlashMessage = {
+            type: 'success',
+            value: 'Usuário deletado com sucesso!'
+        };
+
+        res.status(200).render(view, { message: successMessage });
     } catch (err) {
-        console.log(err);
-        res.status(500).render('login', { message: {
-            type: 'error',
-            value: err,
-            title: 'Erro ao deletar'
-        }});
+        handleControllerError(res, err, view, errorTitle);
     }
 };

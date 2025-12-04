@@ -3,9 +3,6 @@ import { buscarCategorias, criarCategoria, deletarCategoria, editarCategoria, mo
 
 const categoriaRoutes = Router();
 
-//CARREGAR PAGINAS
-categoriaRoutes.get('/cadastrar_categoria', mostrarCadastroCategoria);
-
 categoriaRoutes.get('/inicio', buscarCategorias);
 
 // GET

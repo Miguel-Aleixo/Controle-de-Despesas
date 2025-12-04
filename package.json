@@ -13,6 +13,7 @@
   "description": "",
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.2",
     "@types/node": "^22.13.0",
     "autoprefixer": "^10.4.22",
     "postcss": "^8.5.6",
@@ -21,7 +22,9 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/pg": "^8.15.5",
+    "bcrypt": "^6.0.0",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "pg": "^8.16.3",

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel Administrativo com Dark Mode</title>
+  <title>Painel Administrativo com Cadastro de Categoria</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -52,6 +52,10 @@
       color: var(--cor-texto-principal);
       overflow: hidden;
       transition: background-color var(--transicao-padrao), color var(--transicao-padrao);
+    }
+
+    h1 {
+      margin-bottom: 30px;
     }
 
     /* --- Componentes (Sidebar, Header, Content) --- */
@@ -135,6 +139,44 @@
       padding: 30px;
     }
 
+    /* Estilos para Formulário */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--cor-borda);
+        border-radius: 4px;
+        background: var(--cor-fundo-principal);
+        color: var(--cor-texto-principal);
+        transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: var(--cor-acento);
+        outline: none;
+    }
+
+    .btn-submit {
+        padding: 10px 20px;
+        background: var(--cor-acento);
+        color: #0a0a0a; /* Texto escuro no botão de acento */
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-submit:hover {
+        background: var(--cor-acento-hover);
+    }
+
     /* --- Botão de Dark Mode --- */
     .theme-switcher {
       display: flex;
@@ -168,13 +210,13 @@
   </style>
 </head>
 
-<body>
+<body class="dark-mode">
 
   <div class="sidebar" id="sidebar">
     <h2>Admin Pro</h2>
     <nav>
       <a class="menu-item active" data-page="home"><i class="fas fa-home"></i> Início</a>
-      <a class="menu-item" data-page="cadastrar"><i class="fas fa-plus-circle"></i> Cadastrar</a>
+      <a class="menu-item" data-page="cadastrar_categoria"><i class="fas fa-tags"></i> Cadastrar Categoria</a>
       <a class="menu-item" data-page="listar"><i class="fas fa-list-ul"></i> Listar</a>
       <a class="menu-item" data-page="configuracoes"><i class="fas fa-cog"></i> Configurações</a>
     </nav>
@@ -190,7 +232,7 @@
       <div class="user-info" style="display: flex; align-items: center; gap: 20px;">
         <div class="theme-switcher">
             <i class="fas fa-sun"></i>
-            <i id="theme-toggle" class="fas fa-toggle-off"></i>
+            <i id="theme-toggle" class="fas fa-toggle-on"></i>
             <i class="fas fa-moon"></i>
         </div>
         <span>Miguel (logado)</span>
@@ -209,10 +251,29 @@
       const toggleMenuBtn = document.getElementById("toggleMenu");
       const themeToggleBtn = document.getElementById("theme-toggle");
 
+      // Conteúdo de exemplo para a nova página de Categoria
+      const categoriaFormHtml = `
+        <div style="background: var(--cor-fundo-secundario); padding: 30px; border-radius: 8px; box-shadow: var(--sombra-leve);">
+            <form method="post" action="/categoria/registrar">
+                <div class="form-group">
+                    <label for="catNome" style="display: block; margin-bottom: 8px; font-weight: 600;">Nome da Categoria:</label>
+                    <input type="text" id="catNome" name="nome" class="form-control" placeholder="Ex: Alimentação, Transporte, Lazer" required>
+                </div>
+                <div class="form-group">
+                    <label for="catDescricao" style="display: block; margin-bottom: 8px; font-weight: 600;">Descrição:</label>
+                    <textarea id="catDescricao" name="descricao" class="form-control" rows="3" placeholder="Breve descrição sobre o tipo de despesa que esta categoria abrange."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-save"></i> Salvar Categoria
+                </button>
+            </form>
+        </div>
+      `;
+
       const pageContent = {
-        home: { title: "Bem-vindo", html: "<p>Painel administrativo.</p>" },
-        cadastrar: { title: "Cadastrar", html: "<p>Formulário de cadastro...</p>" },
-        listar: { title: "Listar", html: "<p>Lista de itens...</p>" },
+        home: { title: "Bem-vindo", html: "<p>Painel administrativo com tema claro e escuro.</p>" },
+        cadastrar_categoria: { title: "Cadastrar Nova Categoria", html: categoriaFormHtml },
+        listar: { title: "Listar Itens", html: "<p>Lista de itens...</p>" },
         configuracoes: { title: "Configurações", html: "<p>Opções de configuração...</p>" }
       };
 
@@ -227,7 +288,7 @@
       }
 
       // --- Lógica do Tema (Dark Mode) ---
-      const currentTheme = localStorage.getItem('theme') || 'light';
+      const currentTheme = localStorage.getItem('theme') || 'dark'; // Padrão Dark Mode
       document.body.classList.toggle('dark-mode', currentTheme === 'dark');
       themeToggleBtn.classList.toggle('fa-toggle-on', currentTheme === 'dark');
       themeToggleBtn.classList.toggle('fa-toggle-off', currentTheme === 'light');
