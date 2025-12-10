@@ -3,19 +3,17 @@ import { buscarCategorias, criarCategoria, deletarCategoria, editarCategoria, mo
 
 const categoriaRoutes = Router();
 
-categoriaRoutes.get('/inicio', buscarCategorias);
-
 // GET
-categoriaRoutes.get('/categoria/buscar', buscarCategorias);
+categoriaRoutes.get('/buscar', buscarCategorias);
 
 // POST
-categoriaRoutes.post('/categoria/registrar', criarCategoria);
+categoriaRoutes.post('/registrar', criarCategoria);
 
 // PUT
-categoriaRoutes.put('/categoria/editar', editarCategoria);
+categoriaRoutes.put('/editar', editarCategoria);
 
 // DELETE
-categoriaRoutes.delete('/categoria/deletar', deletarCategoria);
+categoriaRoutes.delete('/deletar', deletarCategoria);
 
 export {
     categoriaRoutes

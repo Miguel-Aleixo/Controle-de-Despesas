@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Listar - Painel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* --- Variáveis de Tema (Light & Dark) --- */
+        :root {
+            --cor-fundo-principal: #f4f7f9;
+            --cor-fundo-secundario: #ffffff;
+            --cor-sidebar: #2c3e50;
+            --cor-texto-principal: #34495e;
+            --cor-texto-secundario: #ecf0f1;
+            --cor-acento: #3498db;
+            --cor-acento-hover: #2980b9;
+            --cor-perigo: #e74c3c;
+            --cor-borda: #e0e0e0;
+            --sombra-leve: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --sombra-media: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transicao-padrao: 0.3s ease;
+        }
+
+        body.dark-mode {
+            --cor-fundo-principal: #0a0a0a;
+            --cor-fundo-secundario: #1c1c1c;
+            --cor-sidebar: #121212;
+            --cor-texto-principal: #f0f0f0;
+            --cor-texto-secundario: #cccccc;
+            --cor-acento: #00bcd4;
+            --cor-acento-hover: #0097a7;
+            --cor-perigo: #ff5252;
+            --cor-borda: #333333;
+            --sombra-leve: 0 2px 4px rgba(0, 0, 0, 0.4);
+            --sombra-media: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--cor-fundo-principal);
+            color: var(--cor-texto-principal);
+            overflow: auto;
+            /* permite rolagem global */
+            -webkit-overflow-scrolling: touch;
+            transition: background-color var(--transicao-padrao), color var(--transicao-padrao);
+        }
+
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        /* --- Componentes (Sidebar, Header, Content) --- */
+        .sidebar {
+            width: 250px;
+            background: var(--cor-sidebar);
+            color: var(--cor-texto-secundario);
+            padding: 20px 0;
+            flex-shrink: 0;
+            transition: var(--transicao-padrao);
+            box-shadow: var(--sombra-media);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--cor-acento);
+            padding: 0 20px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: var(--transicao-padrao);
+            font-weight: 600;
+            border-left: 4px solid transparent;
+            color: var(--cor-texto-secundario);
+            text-decoration: none;
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-left-color: var(--cor-acento);
+        }
+
+        .menu-item.active {
+            background: var(--cor-acento);
+            border-left-color: var(--cor-acento);
+            color: #fff;
+        }
+
+        .header {
+            position: fixed;
+            left: 250px;
+            right: 0;
+            top: 0;
+            height: 70px;
+            background: var(--cor-fundo-secundario);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            box-shadow: var(--sombra-leve);
+            transition: var(--transicao-padrao);
+            z-index: 5;
+            border-bottom: 1px solid var(--cor-borda);
+        }
+
+        .main-content-wrapper {
+            flex-grow: 1;
+            padding-top: 70px;
+            width: 100%;
+            overflow-y: auto;
+            transition: var(--transicao-padrao);
+            margin-left: 250px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        /* Estilos para Formulário */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--cor-borda);
+            border-radius: 4px;
+            background: var(--cor-fundo-principal);
+            color: var(--cor-texto-principal);
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--cor-acento);
+            outline: none;
+        }
+
+        .btn-submit {
+            padding: 10px 20px;
+            background: var(--cor-acento);
+            color: #0a0a0a;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            background: var(--cor-acento-hover);
+        }
+
+        /* --- Botão de Dark Mode --- */
+        .theme-switcher {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #theme-toggle {
+            cursor: pointer;
+            font-size: 22px;
+            color: var(--cor-texto-principal);
+        }
+
+        /* --- Responsividade --- */
+        @media (max-width: 992px) {
+            .sidebar {
+                position: fixed;
+                left: -250px;
+                height: 100%;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .header {
+                left: 0;
+                padding: 0 20px;
+            }
+
+            .main-content-wrapper {
+                margin-left: 0;
+            }
+
+            #toggleMenu {
+                display: inline-block;
+            }
+        }
+
+        #toggleMenu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 15px;
+            color: var(--cor-texto-principal);
+        }
+
+        /* LISTAGEM — Tabela */
+        .table-container {
+            background: var(--cor-fundo-secundario);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--sombra-leve);
+            border: 1px solid var(--cor-borda);
+            overflow-x: auto;
+        }
+
+        .table-list {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        .table-list thead {
+            background: var(--cor-fundo-principal);
+        }
+
+        .table-list th {
+            text-align: left;
+            padding: 12px;
+            font-weight: 700;
+            color: var(--cor-texto-principal);
+            border-bottom: 2px solid var(--cor-borda);
+        }
+
+        .table-list td {
+            padding: 12px;
+            border-bottom: 1px solid var(--cor-borda);
+            color: var(--cor-texto-principal);
+            font-weight: 500;
+        }
+
+        .table-list tr:hover {
+            background: rgba(0, 0, 0, 0.04);
+            transition: .2s;
+        }
+
+        body.dark-mode .table-list tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Ações */
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: .2s;
+            color: #fff;
+        }
+
+        .btn-action.edit {
+            background: var(--cor-acento);
+        }
+
+        .btn-action.edit:hover {
+            background: var(--cor-acento-hover);
+        }
+
+        .btn-action.delete {
+            background: var(--cor-perigo);
+        }
+
+        .btn-action.delete:hover {
+            filter: brightness(.8);
+        }
+
+        .empty {
+            text-align: center;
+            padding: 20px;
+            color: var(--cor-texto-principal);
+            opacity: .7;
+        }
+
+        .table-container {
+            background: var(--cor-fundo-secundario);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--sombra-media);
+            border: 1px solid var(--cor-borda);
+            overflow-x: auto;
+        }
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: var(--cor-texto-principal);
+            border-radius: 15px;
+        }
+
+        .styled-table thead {
+            background: var(--cor-acento);
+            color: #fff;
+            border-radius: 15px;
+            border-bottom: 1px solid var(--cor-borda);
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--cor-borda);
+        }
+
+        .styled-table tbody tr:hover {
+            background: rgba(0, 0, 0, 0.06);
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-action {
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transicao-padrao);
+        }
+
+        .btn-action.edit {
+            background: #2980b9;
+            color: #fff;
+        }
+
+        .btn-action.edit:hover {
+            background: #1f6fa1;
+        }
+
+        .btn-action.delete {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .btn-action.delete:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+
+<body class="dark-mode">
+    <div class="sidebar" id="sidebar">
+        <h2>Admin Pro</h2>
+        <nav>
+            <a class="<%= (typeof activePage !== 'undefined' && activePage === 'inicio') ? 'menu-item active' : 'menu-item' %>"
+                href="/dashboard/inicio"><i class="fas fa-home"></i> Início</a>
+            <a class="<%= (typeof activePage !== 'undefined' && activePage === 'cadastrar_categoria') ? 'menu-item active' : 'menu-item' %>"
+                href="/dashboard/cadastrar_categoria"><i class="fas fa-tags"></i> Cadastrar Categoria</a>
+            <a class="<%= (typeof activePage !== 'undefined' && activePage === 'listar') ? 'menu-item active' : 'menu-item' %>"
+                href="/dashboard/listar"><i class="fas fa-list-ul"></i> Listar</a>
+            <a class="<%= (typeof activePage !== 'undefined' && activePage === 'configuracoes') ? 'menu-item active' : 'menu-item' %>"
+                href="/dashboard/configuracoes"><i class="fas fa-cog"></i> Configurações</a>
+        </nav>
+    </div>
+
+    <div class="main-content-wrapper">
+        <header class="header">
+            <div style="display: flex; align-items: center;">
+                <span id="toggleMenu">☰</span>
+                <span style="font-size: 20px; font-weight: 700;">Meu Sistema</span>
+            </div>
+
+            <div class="user-info" style="display: flex; align-items: center; gap: 20px;">
+                <div class="theme-switcher">
+                    <i class="fas fa-sun"></i>
+                    <i id="theme-toggle" class="fas fa-toggle-on"></i>
+                    <i class="fas fa-moon"></i>
+                </div>
+                <span>
+                    <%= (typeof user !=='undefined' && user) ? user.nome : 'Usuário' %> (logado)
+                </span>
+                <a href="/usuario/logout"
+                    style="text-decoration: none; padding: 8px 16px; background: var(--cor-perigo); color: #fff; border-radius: 6px;">Sair</a>
+            </div>
+        </header>
+
+        <main class="content">
+            <h1 style="margin-bottom: 25px;">Categorias</h1>
+
+            <!-- Tabela de Categorias -->
+            <div class="table-container" style="border-radius: 18px;">
+                <table class="styled-table" style="border-radius: 18px; overflow: hidden;">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th style="text-align: center;">Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% if (categorias && categorias.length> 0) { %>
+                            <% categorias.forEach((cat, index)=> { %>
+                                <tr>
+                                    <td>
+                                        <%= index + 1 %>
+                                    </td>
+                                    <td>
+                                        <%= cat.nome %>
+                                    </td>
+                                    <td>
+                                        <%= cat.descricao || "—" %>
+                                    </td>
+                                    <td class="actions">
+                                        <a href="/categoria/editar/<%= cat.id %>" class="btn-action edit">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </a>
+                                        <a href="/categoria/deletar/<%= cat.id %>" class="btn-action delete">
+                                            <i class="fas fa-trash"></i> Excluir
+                                        </a>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="4" style="text-align:center; padding: 20px;">Nenhuma categoria
+                                                cadastrada.</td>
+                                        </tr>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+            <br><br>
+
+            <h1 style="margin-bottom: 25px;">Usuários</h1>
+
+            <!-- Tabela de Usuários -->
+            <div class="table-container" style="border-radius: 18px;">
+                <table class="styled-table" style="border-radius: 18px; overflow: hidden;">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th style="text-align: center;">Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% if (usuarios && usuarios.length> 0) { %>
+                            <% usuarios.forEach((usr, index)=> { %>
+                                <tr>
+                                    <td>
+                                        <%= index + 1 %>
+                                    </td>
+                                    <td>
+                                        <%= usr.nome %>
+                                    </td>
+                                    <td>
+                                        <%= usr.email %>
+                                    </td>
+                                    <td class="actions">
+                                        <a href="/usuario/editar/<%= usr.id %>" class="btn-action edit">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </a>
+                                        <a href="/usuario/deletar/<%= usr.id %>" class="btn-action delete">
+                                            <i class="fas fa-trash"></i> Excluir
+                                        </a>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="4" style="text-align:center; padding: 20px;">Nenhum usuário
+                                                cadastrado.</td>
+                                        </tr>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+
+
+    </div>
+
+    <script>document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById("sidebar");
+            const toggleMenuBtn = document.getElementById("toggleMenu");
+            const themeToggleBtn = document.getElementById("theme-toggle");
+
+            // Mobile menu toggle
+            if (toggleMenuBtn) {
+                toggleMenuBtn.addEventListener("click", () => {
+                    sidebar.classList.toggle("show");
+                });
+            }
+
+            // Theme initialization
+            try {
+                const currentTheme = localStorage.getItem('theme') || 'dark';
+                if (currentTheme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    if (themeToggleBtn) {
+                        themeToggleBtn.classList.add('fa-toggle-on');
+                        themeToggleBtn.classList.remove('fa-toggle-off');
+                    }
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    if (themeToggleBtn) {
+                        themeToggleBtn.classList.add('fa-toggle-off');
+                        themeToggleBtn.classList.remove('fa-toggle-on');
+                    }
+                }
+            } catch (e) {
+                // localStorage might be unavailable in some environments
+            }
+
+            // Theme toggle action
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    const isDarkMode = document.body.classList.contains('dark-mode');
+                    try {
+                        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+                    } catch (e) { }
+                    themeToggleBtn.classList.toggle('fa-toggle-on', isDarkMode);
+                    themeToggleBtn.classList.toggle('fa-toggle-off', !isDarkMode);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

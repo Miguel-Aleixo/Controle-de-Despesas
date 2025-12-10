@@ -1,23 +1,29 @@
 import { Router } from "express";
-import { buscarUsuarios, criarUsuario, deletarUsuario, editarUsuario, mostrarCadastro, mostrarLogin } from "../controller/userController";
+import { buscarUsuarios, criarUsuario, deletarUsuario, editarUsuario, fazerLogin, fazerLogout, mostrarCadastro, mostrarLogin } from "../controller/userController";
 
 const userRoutes = Router();
 
 //CARREGAR PAGINAS
-userRoutes.get('/usuario/login', mostrarLogin);
-userRoutes.get('/usuario/cadastro', mostrarCadastro);
+userRoutes.get('/login', mostrarLogin);
+userRoutes.get('/cadastro', mostrarCadastro);
 
 // GET
-userRoutes.get('/usuario/buscar', buscarUsuarios);
+userRoutes.get('/buscar', buscarUsuarios);
+
+// LOGIN
+userRoutes.post('/login', fazerLogin);
+
+// LOGOUT
+userRoutes.get('/logout', fazerLogout);
 
 // POST
-userRoutes.post('/usuario/registrar', criarUsuario);
+userRoutes.post('/registrar', criarUsuario);
 
 // PUT
-userRoutes.put('/usuario/editar', editarUsuario);
+userRoutes.put('/editar', editarUsuario);
 
 // DELETE
-userRoutes.delete('/usuario/deletar', deletarUsuario);
+userRoutes.delete('/deletar', deletarUsuario);
 
 export {
     userRoutes

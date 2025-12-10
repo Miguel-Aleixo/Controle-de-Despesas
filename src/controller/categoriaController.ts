@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, response } from "express";
 import { deleteCategoria, getCategorias, postCategoria, putCategoria } from "../model/Categoria";
 
 // CARREGAR PAGINAS
@@ -7,14 +7,14 @@ export function mostrarCadastroCategoria(req: Request, res: Response) {
 };
 
 // CRUD
-export const buscarCategorias = async (req: Request, res: Response) => {
+export const buscarCategorias = async () => {
     try {
         const response = await getCategorias();
 
-        res.status(200).render('index', { categorias: response });
+        return response;
     } catch (err) {
         console.log(err);
-        res.status(500).render('index', { message: err });
+        return false;
     }
 };
 
@@ -25,27 +25,15 @@ export const criarCategoria = async (req: Request, res: Response) => {
         const response = await getCategorias();
 
         if(response.some(r => r.nome === categoria.nome)) {
-            res.status(400).render('cadastrar_categoria', {
-                message: {
-                    type: 'error',
-                    value: 'Já existe essa categoria'
-                }
-            });
+            res.status(400).redirect('/dashboard/cadastrar_categoria');
             return;
         };
         
         await postCategoria(categoria);
-        res.status(201).render('dashboard', { message: {
-            type: 'sucess',
-            value: 'Categoria cadastrada'
-        }});
+        res.status(201).redirect('/dashboard/cadastrar_categoria');
     } catch (err) {
         console.log(err);
-        res.status(500).render('cadastrar_categoria', { message: {
-            type: 'error',
-            value: err,
-            title: 'Dados invalidos'
-        }});
+        res.status(500).redirect('/dashboard/cadastrar_categoria');
     }
 };
 

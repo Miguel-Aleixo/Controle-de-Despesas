@@ -30,8 +30,6 @@ export function mostrarCadastro(req: Request, res: Response) {
 
 // AUTENTICAÇÃO
 export const fazerLogin = async (req: Request, res: Response) => {
-    const view = 'login';
-    const successView = 'dashboard';
     const errorTitle = 'Erro de Autenticação';
 
     try {
@@ -45,22 +43,16 @@ export const fazerLogin = async (req: Request, res: Response) => {
                 value: 'Email ou senha inválidos.',
                 title: 'Falha no Login'
             };
-            res.status(401).render(view, { message });
+            res.status(401).render('login', { message });
             return;
         };
         
      
-        req.session.user = { id: user.id, nome: user.nome, email: user.email };
-
-        const successMessage: FlashMessage = {
-            type: 'success',
-            value: `Bem-vindo(a), ${user.nome}!`,
-            title: 'Login bem-sucedido'
-        };
+        req.session.user = { id: user.id_usuario, nome: user.nome, email: user.email };
         
-        res.status(200).render(successView, { message: successMessage });
+        res.status(200).redirect('/dashboard/inicio');
     } catch (err) {
-        handleControllerError(res, err, view, errorTitle);
+        handleControllerError(res, err, 'login', errorTitle);
     }
 };
 
@@ -76,16 +68,13 @@ export const fazerLogout = (req: Request, res: Response) => {
 
 
 // CRUD
-export const buscarUsuarios = async (req: Request, res: Response) => {
-    const view = 'list';
-    const errorTitle = 'Erro ao buscar usuários';
-
+export const buscarUsuarios = async () => {
     try {
         const response = await getUsers();
 
-        res.status(200).render(view, { users: response });
+       return response
     } catch (err) {
-        handleControllerError(res, err, view, errorTitle);
+        return false
     }
 };
 

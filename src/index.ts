@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import session from "express-session"; 
 import { userRoutes } from './route/userRouter';
 import { categoriaRoutes } from './route/categoriaRouter';
+import { dashboardRoutes } from './route/dashboardRouter';
 
 const app = express();
 
@@ -37,13 +38,14 @@ app.get('/', function (req, res) {
 });
 
 // Rotas Protegidas
-app.get('/dashboard', requireAuth, function (req, res) {
-    res.render('dashboard');
+app.get('/dashboard', requireAuth, (req, res) => {
+    res.redirect("/dashboard/inicio");
 });
 
 // Rotas de Usuário e Categoria (Contendo Login/Logout)
-app.use(userRoutes);
-app.use(categoriaRoutes);
+app.use('/usuario', userRoutes);
+app.use('/categoria', categoriaRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 // Início do Servidor
 app.listen(3333, () => {

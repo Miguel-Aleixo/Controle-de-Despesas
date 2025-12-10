@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 const saltRounds = 10;
 
 type usuario = {
-    id: number,
+    id_usuario: number,
     nome: string,
     email: string,
     senha: string,
@@ -30,7 +30,7 @@ export async function loginUser(email: string, senha: string): Promise<usuario |
 }
 
 export async function getUsers() {
-    const { rows } = await connection.query('SELECT id, nome, email, data_criacao FROM usuario'); 
+    const { rows } = await connection.query('SELECT id_usuario, nome, email, data_criacao FROM usuario'); 
     return rows as usuario[];
 };
 
@@ -53,14 +53,14 @@ export async function putUser(usuario: usuario) {
         params.push(hashedPassword);
     }
 
-    query += ` WHERE id = $${paramIndex}`;
-    params.push(usuario.id!);
+    query += ` WHERE id_usuario = $${paramIndex}`;
+    params.push(usuario.id_usuario!);
 
     await connection.query(query, params);
 };
 
 export async function deleteUser(id: number) {
-     await connection.query('DELETE FROM usuario WHERE id = $1', 
+     await connection.query('DELETE FROM usuario WHERE id_usuario = $1', 
         [id]
     );
 };
